@@ -29,6 +29,10 @@ use case (JSON) ──► Value      (log-scaled net $ + KPI + sponsor)         
 
 ## Run it
 
+**In the browser:** [jaindivyanshu.github.io/ai-leadership-lab](https://jaindivyanshu.github.io/ai-leadership-lab/). It has the same engine ported to JavaScript (`docs/scorecard.js`). CI checks it gives identical results to the Python version on the sample portfolio plus 2,000 random cases.
+
+**From the command line:**
+
 ```bash
 cd experiments/01-agent-readiness-scorecard
 python -m scorecard examples/sample_portfolio.json            # Markdown to stdout

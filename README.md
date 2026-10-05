@@ -6,11 +6,15 @@ Each month I pick one technology shift that enterprise leaders are being asked t
 
 > Opinions are cheap. Working code and honest limitations are not.
 
+### ▶ [Try the Agent Readiness Scorecard in your browser](https://jaindivyanshu.github.io/ai-leadership-lab/)
+
+Score an AI agent use case in 60 seconds and get a verdict plus the controls it needs. No install, and nothing leaves your browser.
+
 ## Experiments
 
 | # | Experiment | Question | Status |
 |---|---|---|---|
-| 01 | [Agent Readiness Scorecard](experiments/01-agent-readiness-scorecard) | Which agent use cases should we fund — and with which controls? | ✅ Published |
+| 01 | [Agent Readiness Scorecard](experiments/01-agent-readiness-scorecard) · [web app](https://jaindivyanshu.github.io/ai-leadership-lab/) | Which agent use cases should we fund — and with which controls? | ✅ Published |
 | 02 | Governed MCP gateway | Can tool allow-lists and audit logs be enforced *outside* the agent? | 🔜 Next |
 | 03 | A2A hand-off between two agents | What breaks when agents from different teams collaborate? | Planned |
 | 04 | Agent evaluation harness | What does a minimum viable eval + tracing setup look like? | Planned |
