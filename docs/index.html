@@ -1,342 +1,200 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agent Readiness Scorecard</title>
-<meta name="description" content="Score an agentic AI use case on value, readiness and risk before you fund it. Get a verdict and the governance controls it needs.">
-<meta property="og:title" content="Agent Readiness Scorecard">
-<meta property="og:description" content="Should we fund this AI agent? Score value, readiness and risk in 60 seconds and get the controls it needs.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://jaindivyanshu.github.io/ai-leadership-lab/">
-<meta property="og:image" content="https://jaindivyanshu.github.io/ai-leadership-lab/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<style>
-:root{
-  --bg:#f6f7f9; --panel:#ffffff; --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea; --soft:#eef1f4;
-  --accent:#2457d6; --accent-ink:#ffffff;
-  --fund:#1a7f4b; --fund-bg:#e6f4ec; --pilot:#9a6b00; --pilot-bg:#fdf3dc;
-  --rework:#b4510f; --rework-bg:#fdebdf; --stop:#b42318; --stop-bg:#fde8e7;
-  --radius:12px; color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0f1216; --panel:#171b21; --ink:#e7eaee; --muted:#9aa4b1; --line:#2a3039; --soft:#1f242c;
-    --accent:#6c95ff; --accent-ink:#0f1216;
-    --fund:#4cc38a; --fund-bg:#13291f; --pilot:#e3b341; --pilot-bg:#2b2410;
-    --rework:#f0883e; --rework-bg:#2d1d10; --stop:#ff7b72; --stop-bg:#301615; color-scheme:dark;
-  }
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-a{color:var(--accent)}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 48px}
-header h1{margin:0 0 4px;font-size:28px;letter-spacing:-.01em}
-header p{margin:0;color:var(--muted);max-width:760px}
-.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:22px;margin-top:22px;align-items:start}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 8px}
-.results{position:sticky;top:16px}
-@media (max-width:900px){.results{position:static;order:-1}}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
-select,input[type=number],input[type=text]{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
-input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
-fieldset{border:0;border-top:1px solid var(--line);margin:14px 0 0;padding:14px 0 6px}
-legend{font-weight:650;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:0 8px 0 0}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-@media (max-width:520px){.row{grid-template-columns:1fr}}
-label{display:block;font-size:13px;font-weight:600;margin-bottom:4px}
-.hint{font-weight:400;color:var(--muted)}
-.money{position:relative}.money span{position:absolute;left:10px;top:9px;color:var(--muted)}.money input{padding-left:22px}
-.slider{display:grid;grid-template-columns:1fr 34px;gap:10px;align-items:center}
-input[type=range]{width:100%;accent-color:var(--accent)}
-.slider output{font-weight:700;text-align:center;background:var(--soft);border-radius:6px;padding:2px 0}
-.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-bottom:12px}
-@media (max-width:520px){.checks{grid-template-columns:1fr}}
-.check{display:flex;gap:9px;align-items:flex-start;font-size:14px;font-weight:500;background:var(--soft);border-radius:8px;padding:9px 10px;cursor:pointer;margin:0}
-.check input{margin-top:3px;accent-color:var(--accent)}
-.btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 12px;cursor:pointer}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.verdict{border-radius:10px;padding:14px 16px;margin-bottom:14px}
-.verdict .label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:700;opacity:.85}
-.verdict .v{font-size:24px;font-weight:750;margin:2px 0}
-.verdict .why{margin:0}
-.v-fund{background:var(--fund-bg);color:var(--fund)} .v-pilot{background:var(--pilot-bg);color:var(--pilot)}
-.v-rework{background:var(--rework-bg);color:var(--rework)} .v-stop{background:var(--stop-bg);color:var(--stop)}
-.meters{display:grid;gap:10px;margin-bottom:14px}
-.meter .top{display:flex;justify-content:space-between;font-size:13px;font-weight:600}
-.bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:4px}
-.bar i{display:block;height:100%;border-radius:99px;background:var(--accent);transition:width .25s}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
-.kpi{background:var(--soft);border-radius:8px;padding:8px 10px}
-.kpi b{display:block;font-size:17px}.kpi span{font-size:12px;color:var(--muted)}
-h3{font-size:14px;margin:14px 0 6px}
-ul.list{margin:0 0 6px;padding-left:20px} ul.list li{margin:3px 0}
-ul.controls{list-style:none;padding:0;margin:0 0 8px} ul.controls li{display:flex;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)}
-ul.controls li::before{content:"☐";color:var(--muted)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 10px}
-.toast{font-size:13px;color:var(--muted);min-height:18px}
-details{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px}
-summary{cursor:pointer;font-weight:650}
-table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
-th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
-.tablewrap{overflow-x:auto}
-footer{margin-top:22px;color:var(--muted);font-size:13px}
-.errors{color:var(--stop);font-weight:600}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Readiness Scorecard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Agent Readiness Scorecard</h1>
-    <p>Should we fund this AI agent? Score a use case on <b>value</b>, <b>readiness</b> and <b>risk</b>, and get a verdict plus the governance controls it needs at its risk tier. Nothing you enter leaves your browser.</p>
-  </header>
-
-  <div class="grid">
-    <form class="panel" id="form" autocomplete="off" novalidate>
-      <div class="toolbar">
-        <label for="preset" style="margin:0">Load an example</label>
-        <select id="preset" style="width:auto;flex:1;min-width:220px">
-          <option value="">— start from a blank use case —</option>
-        </select>
-        <button type="button" class="btn" id="reset">Reset</button>
-      </div>
-
-      <fieldset>
-        <legend>Use case</legend>
-        <div class="row">
-          <div><label for="name">Name</label><input type="text" id="name" placeholder="e.g. Invoice exception agent"></div>
-          <div><label for="owner_function">Business owner</label><input type="text" id="owner_function" placeholder="e.g. Finance"></div>
+    <header class="app-header">
+        <div class="container">
+            <h1>Agent Readiness Scorecard</h1>
+            <p class="subtitle">Evaluate enterprise AI agent use cases for business value, technical readiness, and risk.</p>
         </div>
-      </fieldset>
+    </header>
 
-      <fieldset>
-        <legend>Value</legend>
-        <div class="row">
-          <div><label for="tasks_per_month">Tasks per month</label><input type="number" min="0" step="1" id="tasks_per_month"></div>
-          <div><label for="minutes_saved_per_task">Minutes saved per task</label><input type="number" min="0" step="0.5" id="minutes_saved_per_task"></div>
+    <main class="container layout-grid">
+        <section class="form-section">
+            <h2>Use Case Profile</h2>
+            <p class="section-desc">Fill in the details below. The scorecard updates automatically.</p>
+            
+            <form id="scorecard-form">
+                <div class="card">
+                    <h3>1. Business Value</h3>
+                    <div class="form-group">
+                        <label for="tasks_per_month">Tasks per month</label>
+                        <input type="number" id="tasks_per_month" value="1000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="minutes_saved">Minutes saved per task</label>
+                        <input type="number" id="minutes_saved" value="15" min="0" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="cost_per_hour">Loaded cost per hour ($)</label>
+                        <input type="number" id="cost_per_hour" value="50" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="other_value">Other annual value / Revenue uplift ($)</label>
+                        <input type="number" id="other_value" value="0" min="0">
+                    </div>
+                    
+                    <div class="form-row mt-2">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="kpi_defined" checked>
+                            Measurable KPI defined upfront
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="exec_sponsor" checked>
+                            Executive sponsor secured
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>2. Cost Estimates</h3>
+                    <div class="form-group">
+                        <label for="build_cost">Estimated build cost ($)</label>
+                        <input type="number" id="build_cost" value="100000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="run_cost">Est. annual running cost ($)</label>
+                        <input type="number" id="run_cost" value="20000" min="0">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>3. Technical Readiness</h3>
+                    <p class="help-text">Rate on a scale of 0 (none) to 5 (excellent).</p>
+                    <div class="form-group">
+                        <label for="data_access">Data access reliability (0-5)</label>
+                        <input type="number" id="data_access" value="4" min="0" max="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="tool_apis">Target system APIs available (0-5)</label>
+                        <input type="number" id="tool_apis" value="3" min="0" max="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="process_documented">Process documentation quality (0-5)</label>
+                        <input type="number" id="process_documented" value="4" min="0" max="5">
+                    </div>
+                    <div class="form-row mt-2">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="eval_set" checked>
+                            Evaluation set (golden cases) exists
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="observability" checked>
+                            Tracing / Observability is planned
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>4. Risk Profile</h3>
+                    <div class="form-group">
+                        <label for="autonomy">Agent Autonomy Level</label>
+                        <select id="autonomy">
+                            <option value="suggest">Suggest (Read-only advice)</option>
+                            <option value="draft">Draft (Drafts response for human)</option>
+                            <option value="act_with_approval" selected>Act with Approval (Human in loop)</option>
+                            <option value="act_autonomous">Fully Autonomous (Acts instantly)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reversibility">Action Reversibility</label>
+                        <select id="reversibility">
+                            <option value="reversible">Reversible (Easy to undo)</option>
+                            <option value="partially_reversible" selected>Partially Reversible (Takes effort)</option>
+                            <option value="irreversible">Irreversible (External impact)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_sensitivity">Data Sensitivity</label>
+                        <select id="data_sensitivity">
+                            <option value="public">Public Data</option>
+                            <option value="internal" selected>Internal Business Data</option>
+                            <option value="confidential">Confidential / PII</option>
+                            <option value="regulated">Regulated (HIPAA/PCI/etc)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="regulatory_scope">Regulatory Scope (e.g. EU AI Act)</label>
+                        <select id="regulatory_scope">
+                            <option value="none" selected>None</option>
+                            <option value="transparency">Transparency Obligation</option>
+                            <option value="high_risk">High Risk Category</option>
+                        </select>
+                    </div>
+                    <div class="form-row mt-2">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="customer_facing">
+                            Customer-facing agent
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <aside class="results-section">
+            <div class="sticky-results">
+                <h2>Scorecard Verdict</h2>
+                <div class="verdict-banner">
+                    <span id="verdict" class="verdict-badge">Calculating...</span>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span class="metric-label">Value Score</span>
+                        <span id="value_score" class="metric-value text-success">--</span>
+                        <span class="metric-subtext">/ 100</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Readiness Score</span>
+                        <span id="readiness_score" class="metric-value">--</span>
+                        <span class="metric-subtext">/ 100</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Risk Score</span>
+                        <span id="risk_score" class="metric-value">--</span>
+                        <span class="metric-subtext" id="risk_tier">--</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Net Annual Value</span>
+                        <span id="net_value" class="metric-value">--</span>
+                    </div>
+                    <div class="metric-box">
+                        <span class="metric-label">Payback Period</span>
+                        <span id="payback" class="metric-value">--</span>
+                    </div>
+                </div>
+
+                <div class="results-details">
+                    <div class="result-block">
+                        <h4>Rationale</h4>
+                        <ul id="reasons_list" class="reasons-list"></ul>
+                    </div>
+
+                    <div class="result-block gaps-block">
+                        <h4>Gaps to close</h4>
+                        <ul id="gaps_list" class="gaps-list"></ul>
+                    </div>
+
+                    <div class="result-block controls-block">
+                        <h4>Required Governance Controls</h4>
+                        <ul id="controls_list" class="controls-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="app-footer">
+        <div class="container">
+            <p>Based on the open-source Agent Readiness Framework by <a href="https://github.com/jaindivyanshu" target="_blank">Divyanshu Jain</a>.</p>
         </div>
-        <div class="row">
-          <div><label for="loaded_cost_per_hour_usd">Loaded cost per hour</label><div class="money"><span>$</span><input type="number" min="0" step="1" id="loaded_cost_per_hour_usd"></div></div>
-          <div><label for="other_annual_value_usd">Other annual value <span class="hint">(revenue, leakage avoided)</span></label><div class="money"><span>$</span><input type="number" min="0" step="1000" id="other_annual_value_usd"></div></div>
-        </div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="kpi_defined"><span>A measurable KPI is agreed up front</span></label>
-          <label class="check"><input type="checkbox" id="exec_sponsor"><span>An executive sponsor owns the outcome</span></label>
-        </div>
-      </fieldset>
+    </footer>
 
-      <fieldset>
-        <legend>Readiness <span class="hint" style="text-transform:none;letter-spacing:0">0 = none · 5 = excellent</span></legend>
-        <div class="row">
-          <div><label for="data_access">Access to the data it needs</label><div class="slider"><input type="range" min="0" max="5" step="1" id="data_access"><output for="data_access"></output></div></div>
-          <div><label for="tool_apis">Usable APIs / tools to act through</label><div class="slider"><input type="range" min="0" max="5" step="1" id="tool_apis"><output for="tool_apis"></output></div></div>
-        </div>
-        <div class="row">
-          <div><label for="process_documented">Process documented well enough to specify</label><div class="slider"><input type="range" min="0" max="5" step="1" id="process_documented"><output for="process_documented"></output></div></div>
-          <div></div>
-        </div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="eval_set_exists"><span>An evaluation (golden test) set exists</span></label>
-          <label class="check"><input type="checkbox" id="observability_in_place"><span>Tracing / observability is in place</span></label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Risk</legend>
-        <div class="row">
-          <div><label for="autonomy">How much does the agent do on its own?</label>
-            <select id="autonomy">
-              <option value="suggest">Suggests only</option>
-              <option value="draft">Drafts for a human to send</option>
-              <option value="act_with_approval">Acts after human approval</option>
-              <option value="act_autonomous">Acts on its own</option>
-            </select></div>
-          <div><label for="reversibility">Can its actions be undone?</label>
-            <select id="reversibility">
-              <option value="reversible">Yes, easily</option>
-              <option value="partially_reversible">Partly</option>
-              <option value="irreversible">No (payments, deletions, external messages)</option>
-            </select></div>
-        </div>
-        <div class="row">
-          <div><label for="data_sensitivity">Most sensitive data it touches</label>
-            <select id="data_sensitivity">
-              <option value="public">Public</option>
-              <option value="internal">Internal</option>
-              <option value="confidential">Confidential</option>
-              <option value="regulated">Regulated (personal, financial, health)</option>
-            </select></div>
-          <div><label for="regulatory_scope">AI-specific regulation in scope</label>
-            <select id="regulatory_scope">
-              <option value="none">None specific</option>
-              <option value="transparency">Transparency duties (e.g. disclose AI use)</option>
-              <option value="high_risk">High-risk AI category</option>
-            </select></div>
-        </div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="customer_facing"><span>Customers or the public interact with it</span></label>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Cost</legend>
-        <div class="row">
-          <div><label for="est_build_cost_usd">One-off build cost</label><div class="money"><span>$</span><input type="number" min="0" step="1000" id="est_build_cost_usd"></div></div>
-          <div><label for="est_annual_run_cost_usd">Annual run cost <span class="hint">(models, infra, support)</span></label><div class="money"><span>$</span><input type="number" min="0" step="1000" id="est_annual_run_cost_usd"></div></div>
-        </div>
-      </fieldset>
-    </form>
-
-    <section class="panel results" aria-live="polite" id="results"></section>
-  </div>
-
-  <details>
-    <summary>How the scoring works</summary>
-    <div class="tablewrap">
-    <table>
-      <tr><th>Pillar</th><th>How it's scored (0–100)</th></tr>
-      <tr><td>Value</td><td>Net annual value (time saved × loaded cost + other value − run cost), log-scaled from $25k (0 points) to $5M (70 points), plus 15 for an agreed KPI and 15 for an executive sponsor.</td></tr>
-      <tr><td>Readiness</td><td>Data access 25 · usable APIs 25 · documented process 20 · evaluation set 15 · observability 15.</td></tr>
-      <tr><td>Risk</td><td>Autonomy (5–35) + irreversibility (0–20) + data sensitivity (0–20) + regulation (0–15) + customer-facing (10). Autonomous and irreversible together is always <b>Critical</b>. Tiers: Low &lt;30 · Medium 30–54 · High 55–75 · Critical ≥76.</td></tr>
-    </table>
-    <table>
-      <tr><th>Verdict</th><th>Rule (checked in this order)</th></tr>
-      <tr><td>🔴 Stop</td><td>Value score &lt;25, or Critical risk with readiness &lt;50</td></tr>
-      <tr><td>🟠 Rework before funding</td><td>No agreed KPI, or readiness &lt;40</td></tr>
-      <tr><td>🟡 Pilot with guardrails</td><td>High/Critical risk, readiness &lt;65, or value &lt;50</td></tr>
-      <tr><td>🟢 Fund to production</td><td>Everything else</td></tr>
-    </table>
-    </div>
-    <p>Controls are <b>tiered by risk</b>, not uniform: a low-risk assistant needs an owner and an inventory entry; a critical autonomous agent needs gateway-enforced tool allow-lists, audit logs, a tested kill switch, red-teaming, staged autonomy and board sign-off. Weights are opinionated defaults — adapt them to your own AI policy. Source code, tests and the Python version: <a href="https://github.com/jaindivyanshu/ai-leadership-lab/tree/main/experiments/01-agent-readiness-scorecard">GitHub</a>.</p>
-  </details>
-
-  <footer>
-    Built by <a href="https://www.linkedin.com/in/divyanshu-jain-ai-leader">Divyanshu Jain</a> as part of the <a href="https://github.com/jaindivyanshu/ai-leadership-lab">AI Leadership Lab</a>. Examples are synthetic. A decision aid, not legal, compliance or investment advice. MIT licensed.
-  </footer>
-</div>
-
-<script src="scorecard.js"></script>
-<script>
-(function () {
-  "use strict";
-  const EXAMPLES = [
-    {"name":"Service desk triage & auto-resolution","owner_function":"IT Operations","tasks_per_month":40000,"minutes_saved_per_task":9,"loaded_cost_per_hour_usd":35,"kpi_defined":true,"exec_sponsor":true,"data_access":4,"tool_apis":4,"process_documented":4,"eval_set_exists":true,"observability_in_place":true,"autonomy":"act_with_approval","reversibility":"reversible","data_sensitivity":"internal","customer_facing":false,"regulatory_scope":"none","est_annual_run_cost_usd":180000,"est_build_cost_usd":450000},
-    {"name":"Bank reconciliation agent","owner_function":"Finance - Controllership","tasks_per_month":25000,"minutes_saved_per_task":6,"loaded_cost_per_hour_usd":40,"kpi_defined":true,"exec_sponsor":true,"data_access":3,"tool_apis":2,"process_documented":4,"eval_set_exists":false,"observability_in_place":false,"autonomy":"act_with_approval","reversibility":"partially_reversible","data_sensitivity":"confidential","customer_facing":false,"regulatory_scope":"none","est_annual_run_cost_usd":120000,"est_build_cost_usd":300000},
-    {"name":"Sales lead-enrichment copilot","owner_function":"Sales","tasks_per_month":6000,"minutes_saved_per_task":20,"loaded_cost_per_hour_usd":45,"other_annual_value_usd":400000,"kpi_defined":false,"exec_sponsor":true,"data_access":3,"tool_apis":3,"process_documented":2,"eval_set_exists":false,"observability_in_place":true,"autonomy":"draft","reversibility":"reversible","data_sensitivity":"confidential","customer_facing":false,"regulatory_scope":"none","est_annual_run_cost_usd":60000,"est_build_cost_usd":150000},
-    {"name":"Autonomous refund agent","owner_function":"Customer Service","tasks_per_month":8000,"minutes_saved_per_task":12,"loaded_cost_per_hour_usd":25,"kpi_defined":true,"exec_sponsor":false,"data_access":2,"tool_apis":3,"process_documented":2,"eval_set_exists":false,"observability_in_place":false,"autonomy":"act_autonomous","reversibility":"irreversible","data_sensitivity":"regulated","customer_facing":true,"regulatory_scope":"transparency","est_annual_run_cost_usd":90000,"est_build_cost_usd":250000},
-    {"name":"Meeting-notes summariser","owner_function":"Corporate","tasks_per_month":300,"minutes_saved_per_task":5,"loaded_cost_per_hour_usd":50,"kpi_defined":false,"exec_sponsor":false,"data_access":4,"tool_apis":4,"process_documented":3,"eval_set_exists":false,"observability_in_place":false,"autonomy":"suggest","reversibility":"reversible","data_sensitivity":"internal","customer_facing":false,"regulatory_scope":"none","est_annual_run_cost_usd":12000,"est_build_cost_usd":20000}
-  ];
-  const BLANK = Object.assign({}, Scorecard.DEFAULTS, {tasks_per_month: 1000, minutes_saved_per_task: 10, loaded_cost_per_hour_usd: 40, data_access: 3, tool_apis: 3, process_documented: 3, est_annual_run_cost_usd: 50000, est_build_cost_usd: 150000});
-  const FIELDS = Object.keys(Scorecard.DEFAULTS).filter(k => !["description", "tags"].includes(k));
-  const CLASS = {"Fund to production": "v-fund", "Pilot with guardrails": "v-pilot", "Rework before funding": "v-rework", "Stop": "v-stop"};
-  const EMOJI = {"Fund to production": "🟢", "Pilot with guardrails": "🟡", "Rework before funding": "🟠", "Stop": "🔴"};
-  const TIER_COLOUR = {Low: "var(--fund)", Medium: "var(--pilot)", High: "var(--rework)", Critical: "var(--stop)"};
-  const $ = id => document.getElementById(id);
-  const usd = x => (x < 0 ? "−$" : "$") + Math.abs(Math.round(x)).toLocaleString("en-US");
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-
-  const preset = $("preset");
-  EXAMPLES.forEach((e, i) => preset.add(new Option(e.name, String(i))));
-
-  function read() {
-    const o = {};
-    for (const k of FIELDS) {
-      const el = $(k); if (!el) continue;
-      if (el.type === "checkbox") o[k] = el.checked;
-      else if (el.type === "number" || el.type === "range") o[k] = el.value === "" ? 0 : Number(el.value);
-      else o[k] = el.value;
-    }
-    return o;
-  }
-  function write(uc) {
-    const full = Object.assign({}, Scorecard.DEFAULTS, uc);
-    for (const k of FIELDS) {
-      const el = $(k); if (!el) continue;
-      if (el.type === "checkbox") el.checked = !!full[k]; else el.value = full[k];
-    }
-    document.querySelectorAll(".slider output").forEach(o => o.value = $(o.htmlFor.value).value);
-  }
-
-  let last = null;
-  function render() {
-    document.querySelectorAll(".slider output").forEach(o => o.value = $(o.htmlFor.value).value);
-    const r = Scorecard.score(read());
-    const box = $("results");
-    if (r.errors) { box.innerHTML = `<p class="errors">${r.errors.map(esc).join("<br>")}</p>`; return; }
-    last = r;
-    const title = r.use_case.name ? esc(r.use_case.name) : "Your use case";
-    const payback = r.payback_months === null ? "n/a" : r.payback_months.toFixed(1) + " mo";
-    box.innerHTML = `
-      <div class="verdict ${CLASS[r.verdict]}">
-        <div class="label">${title} · verdict</div>
-        <div class="v">${EMOJI[r.verdict]} ${r.verdict}</div>
-        <p class="why">${esc(r.reasons[0])}</p>
-      </div>
-      <div class="meters">
-        ${meter("Value", r.value_score, "var(--accent)")}
-        ${meter("Readiness", r.readiness_score, "var(--accent)")}
-        ${meter(`Risk · ${r.risk_tier}`, r.risk_score, TIER_COLOUR[r.risk_tier])}
-      </div>
-      <div class="kpis">
-        <div class="kpi"><b>${usd(r.annual_value_usd)}</b><span>gross value / yr</span></div>
-        <div class="kpi"><b>${usd(r.net_annual_value_usd)}</b><span>net of run cost</span></div>
-        <div class="kpi"><b>${payback}</b><span>payback</span></div>
-      </div>
-      ${r.gaps.length ? `<h3>Gaps to close (${r.gaps.length})</h3><ul class="list">${r.gaps.map(g => `<li>${esc(g)}</li>`).join("")}</ul>` : `<h3>Gaps to close</h3><p>None. Foundations look solid.</p>`}
-      <h3>Controls required at ${r.risk_tier} risk (${r.controls.length})</h3>
-      <ul class="controls">${r.controls.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
-      <div class="actions">
-        <button type="button" class="btn primary" id="copy">Copy summary</button>
-        <button type="button" class="btn" id="share">Copy share link</button>
-      </div>
-      <div class="toast" id="toast"></div>`;
-    $("copy").onclick = () => copy(markdown(r), "Summary copied: paste it into an email, deck or ticket.");
-    $("share").onclick = () => copy(shareUrl(), "Link copied: it reopens this exact scenario.");
-  }
-  function meter(label, v, colour) {
-    return `<div class="meter"><div class="top"><span>${label}</span><span>${v}</span></div><div class="bar" role="img" aria-label="${label} ${v} of 100"><i style="width:${v}%;background:${colour}"></i></div></div>`;
-  }
-  function markdown(r) {
-    const n = r.use_case.name || "Use case";
-    return [`**${n}: ${EMOJI[r.verdict]} ${r.verdict}** (risk tier: ${r.risk_tier})`,
-      `Value ${r.value_score} · Readiness ${r.readiness_score} · Risk ${r.risk_score}`,
-      `Net value ${usd(r.net_annual_value_usd)}/yr · payback ${r.payback_months === null ? "n/a" : r.payback_months.toFixed(1) + " months"}`,
-      `Why: ${r.reasons[0]}`, "",
-      r.gaps.length ? "Gaps to close:\n" + r.gaps.map(g => "- " + g).join("\n") : "Gaps to close: none",
-      "", "Required controls:\n" + r.controls.map(c => "- [ ] " + c).join("\n"), "",
-      `Scored with the Agent Readiness Scorecard: ${location.origin + location.pathname}`].join("\n");
-  }
-  function shareUrl() {
-    const cur = read(), diff = {};
-    for (const k of FIELDS) if (cur[k] !== Scorecard.DEFAULTS[k]) diff[k] = cur[k];
-    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(diff)))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    return location.origin + location.pathname + "#s=" + b64;
-  }
-  function fromHash() {
-    const m = location.hash.match(/s=([A-Za-z0-9_-]+)/);
-    if (!m) return null;
-    try { return JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/"))))); } catch (e) { return null; }
-  }
-  async function copy(text, msg) {
-    try { await navigator.clipboard.writeText(text); }
-    catch (e) {
-      const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select();
-      try { document.execCommand("copy"); } catch (_) {} t.remove();
-    }
-    $("toast").textContent = msg;
-  }
-
-  $("form").addEventListener("input", render);
-  $("form").addEventListener("change", render);
-  preset.addEventListener("change", () => { write(preset.value === "" ? BLANK : EXAMPLES[Number(preset.value)]); render(); });
-  $("reset").addEventListener("click", () => { preset.value = ""; history.replaceState(null, "", location.pathname); write(BLANK); render(); });
-
-  const shared = fromHash();
-  if (shared) write(shared); else { preset.value = "1"; write(EXAMPLES[1]); }
-  render();
-})();
-</script>
+    <script src="script.js"></script>
 </body>
 </html>

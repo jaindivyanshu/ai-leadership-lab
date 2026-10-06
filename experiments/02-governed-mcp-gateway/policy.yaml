@@ -1,0 +1,20 @@
+# Agentic Harness - Governance Policy
+# This file defines the allow-list and controls for AI agents interacting with enterprise tools.
+
+# Global settings
+audit_log: "audit.jsonl"
+default_action: "deny" # Implicit deny all tools not listed below
+
+policies:
+  query_customer_data:
+    action: "allow"
+    rate_limit_per_minute: 10
+    description: "Read-only access to customer profiles."
+
+  issue_refund:
+    action: "require_approval"
+    description: "Financial impact. Requires human-in-the-loop approval before execution."
+
+  delete_account:
+    action: "deny"
+    description: "Destructive action. Strictly blocked for all autonomous agents."

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scorecard Parity Test</title>
+</head>
+<body>
+    <h1>Testing JS Engine Parity</h1>
+    <pre id="output"></pre>
+    <script src="script.js"></script>
+    <script>
+        async function runTests() {
+            const out = document.getElementById('output');
+            out.textContent = "Loading sample_portfolio.json...\n";
+            
+            try {
+                // To avoid fetch issues on local file://, we'll just mock the first case from memory if fetch fails
+                let data = null;
+                try {
+                    const response = await fetch('../experiments/01-agent-readiness-scorecard/examples/sample_portfolio.json');
+                    data = await response.json();
+                } catch(e) {
+                    out.textContent += "Fetch failed (CORS/local). Falling back to mock data.\n";
+                    data = {
+                        "use_cases": [
+                            {
+                                "name": "Service Desk Triage",
+                                "tasks_per_month": 5000,
+                                "minutes_saved_per_task": 5,
+                                "loaded_cost_per_hour_usd": 40,
+                                "other_annual_value_usd": 0,
+                                "kpi_defined": true,
+                                "exec_sponsor": true,
+                                "data_access": 5,
+                                "tool_apis": 4,
+                                "process_documented": 4,
+                                "eval_set_exists": true,
+                                "observability_in_place": true,
+                                "autonomy": "act_with_approval",
+                                "reversibility": "partially_reversible",
+                                "data_sensitivity": "internal",
+                                "customer_facing": false,
+                                "regulatory_scope": "none",
+                                "est_annual_run_cost_usd": 25000,
+                                "est_build_cost_usd": 120000
+                            }
+                        ]
+                    };
+                }
+
+                data.use_cases.forEach(uc => {
+                    out.textContent += `\nTesting: ${uc.name}\n`;
+                    const result = scoreUseCase(uc);
+                    out.textContent += `Verdict: ${result.verdict}\n`;
+                    out.textContent += `Value Score: ${result.value_score}\n`;
+                    out.textContent += `Readiness Score: ${result.readiness_score}\n`;
+                    out.textContent += `Risk Score: ${result.risk_score} (${result.risk_tier})\n`;
+                    out.textContent += `Controls: ${result.controls.length}\n`;
+                });
+                
+                out.textContent += "\nTests completed. Run python backend and verify values match exactly.";
+            } catch (err) {
+                out.textContent += "\nError running tests: " + err.message;
+            }
+        }
+        runTests();
+    </script>
+</body>
+</html>
